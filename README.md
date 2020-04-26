@@ -65,3 +65,18 @@ PUT patients/{id}
 ```
 ### Bonus: Securing Endpoints
 Endpoints can be secured using JWT (JSON Web Tokens) Authentication. When a client requests data to the server, it generates a signed JWT to be part of its request. The server reads the JWT and validates the token.
+
+After running the server, you can check to the homepage: http://localhost:9000/
+
+You will find the message: "Not Authorized".
+
+After running the client:
+``` bash
+cd client
+go build
+go run client.go
+```
+You can go to port 8001 on the client side: http://localhost:8001/
+And you will find a message: "Only Authorized Clients can see this message!" This only works when the client side has the same value in the 'mySigningKey' variable as the server side. Otherwise, it will fail.
+
+Note: In practice, the key should be stored as an environmental variable.
