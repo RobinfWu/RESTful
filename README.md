@@ -16,10 +16,14 @@ Run main_test.go
 ``` bash
 go test
 ```
-There are two main folders:
+There are three go files:
   - **server/server.go** -  creates a http server that exercises GET, POST, PUT, and DELETE.
+    - homePage() - a homepage that reveals a message only to authorized clients.
+    - isAuthorized() - validates the token from incoming requests
   - **server/main_test.go** - contains unit tests to check the functionalities
   - **client/client.go** - a client API to generate a signed JWT to hit the server endpoint.
+     - homePage() - a homepage that makes a GET request to the server's homepage, using the generated token
+     - GenerateJWT() - a function to generate a token to access the server's homepage
 
 ## Endpoints
 
