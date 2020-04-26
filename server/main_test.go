@@ -1,13 +1,13 @@
 package main
 
 import (
-	//"encoding/json"
 	"testing"
 	"bytes"
 	"net/http"
 	"net/http/httptest"
 )
 
+// Check status of GET request with the getPatients()
 func TestGetPatients(t *testing.T) {
 	request, err := http.NewRequest("GET", "/patients", nil)
 	if err != nil {
@@ -23,6 +23,7 @@ func TestGetPatients(t *testing.T) {
 	}
 }
 
+// Check status of GET request with the getPatient() with patient ID 1
 func TestGetPatient(t *testing.T) {
 	request, err := http.NewRequest("GET", "/patients", nil)
 
@@ -44,6 +45,7 @@ func TestGetPatient(t *testing.T) {
 	}
 }
 
+// Check status of POST request with the addPatient()
 func TestAddPatient(t *testing.T) {
 	var jsonStr = []byte(`{"id":"3","firstname":"Alice","lastname":"Endyke","address":"54 Hartford, CT","doctor":{"firstname":"John","lastname":"Stewart"}}`)
 
@@ -64,6 +66,7 @@ func TestAddPatient(t *testing.T) {
 	}
 }
 
+// Check status of PUT request with the updatePatient()
 func TestUpdatePatient(t *testing.T) {
 	var jsonStr = []byte(`{"id":"3","firstname":"Alice","lastname":"Endyke","address":"43 Treeland, CA","doctor":{"firstname":"John","lastname":"Stewart"}}`)
 
@@ -81,7 +84,7 @@ func TestUpdatePatient(t *testing.T) {
 	}
 }
 
-// Testing deletePatient()
+// Check status of DELETE request with the deletePatient()
 func TestDeletePatient(t *testing.T) {
 	request, err := http.NewRequest("DELETE", "/patients", nil)
 	if err != nil {

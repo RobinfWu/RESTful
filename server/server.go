@@ -1,5 +1,12 @@
 package main
 
+// fmt - formatted I/O
+// log - logging package
+// net/http - provides HTTP client and server implementations
+// encoding/json - encoding with json format
+// mux - a request router and dispatcher for matching incoming requests to their respective handler
+// jwt - JSON Web Tokens for Authentication
+
 import (
     "fmt"
     "log"
@@ -11,11 +18,13 @@ import (
 
 var mySigningKey = []byte("secretkey")
 
+// A homepage that reveals the messeage for authorized clients
 func homePage(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Only Authorized Clients can see this message!")
     fmt.Println("Endpoint Hit: homePage")
 }
 
+// Validates the token of incoming requests. 
 func isAuthorized(endpoint func(http.ResponseWriter, *http.Request)) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -60,13 +69,13 @@ type Doctor struct {
 // Initize Patient var as a slice Patient struct
 var Patients []Patient
 
-// Get all books
+// Get all Patients
 func getPatients(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(Patients)
 }
 
-// Get single book
+// Get single Patient
 func getPatient(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
     params := mux.Vars(r) // Gets params
@@ -124,7 +133,7 @@ func main() {
     // Initialize router
     r := mux.NewRouter()
 
-    // Hardcoded data - @todo: add database
+    // Hardcoded data - no database for this example
     Patients = append(Patients, Patient{ID: "1", Firstname: "Andrew", Lastname: "Weber", Address: "22 Hartford, CT", Doctor: &Doctor{Firstname: "John", Lastname: "Doe"}})
     Patients = append(Patients, Patient{ID: "2", Firstname: "Bob", Lastname: "Brown", Address: "26 Hartford, CT", Doctor: &Doctor{Firstname: "Steve", Lastname: "Smith"}})
     fmt.Println(Patients)
@@ -137,6 +146,6 @@ func main() {
     r.HandleFunc("/patients/{id}", updatePatient).Methods("PUT")
     r.HandleFunc("/patients/{id}", deletePatient).Methods("DELETE")
 
-    // Start server
+    // Start server, listen at port 9000
     log.Fatal(http.ListenAndServe(":9000", r))
 }

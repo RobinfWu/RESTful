@@ -13,13 +13,16 @@ import (
 // Ex: var mySigningKey = os.Get("MY_JWT_TOKEN")
 var mySigningKey = []byte("secretkey")
 
+// Generates a token to GET the server's homepage which requires authorization
 func homePage(w http.ResponseWriter, r *http.Request) {
+    // Generate a token
     validToken, err := GenerateJWT()
     if err != nil {
         fmt.Println("Failed to generate token")
     }
-    //fmt.Println(w, validToken)
     client := &http.Client{}
+
+    // GET request of the server's homepage on port 9000
     req, _ := http.NewRequest("GET", "http://localhost:9000/", nil)
     req.Header.Set("Token", validToken)
     res, err := client.Do(req)
@@ -34,6 +37,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, string(body))
 }
 
+// Generate a token to access the server's homepage
 func GenerateJWT() (string, error) {
     token := jwt.New(jwt.SigningMethodHS256)
 
@@ -53,6 +57,7 @@ func GenerateJWT() (string, error) {
     return tokenString, nil
 }
 
+// The client listens on port 8001
 func handleRequests() {
     http.HandleFunc("/", homePage)
     log.Fatal(http.ListenAndServe(":8001", nil))
